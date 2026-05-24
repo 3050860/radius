@@ -226,6 +226,12 @@ func (s *PacketServer) ListenAndServe() error {
 	if err != nil {
 		return err
 	}
+
+	if udpConn, ok := pc.(*net.UDPConn); ok {
+	    udpConn.SetReadBuffer(256 * 1024)  // 256 KB
+	    udpConn.SetWriteBuffer(256 * 1024)
+	}
+
 	defer pc.Close()
 	return s.Serve(pc)
 }
